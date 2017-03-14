@@ -1,3 +1,5 @@
+/* global d3  queue */
+
       const table = d3.select('.table-container').append('table');
       table.append('thead');
       table.append('tbody');
@@ -15,40 +17,40 @@
             head: 'State',
             cl: 'state',
             html(row) {
-              const sf_letter = stateface[row.state_abbrev];
-              const icon = `<span class='stateface'>${sf_letter}</span>`;
+              const sfLetter = stateface[row.state_abbrev];
+              const icon = `<span class='stateface'>${sfLetter}</span>`;
               const text = `<span class='title'>${row.state}</span>`;
               return icon + text;
-            }
+            },
           },
           {
             head: 'Employment (millions)',
             cl: 'emp',
             html(row) {
-              let scale = d3.scale.threshold()
+              const scale = d3.scale.threshold()
                 .domain([1, 2, 4, 6])
                 .range([1, 2, 3, 4, 5]);
 
               const icon = '<span class="fa fa-male"></span>';
-              const value = d3.format(",.1f")(row.emp/1000000);
+              const value = d3.format(',.1f')(row.emp / 1000000);
               const nIcons = scale(value);
               const text = `<span class='text'>${value}</span>`;
               return text + d3.range(nIcons)
                 .map(() => icon).join('');
-            }
+            },
           },
           {
             head: 'Change in Employment',
             cl: 'emp_pc',
             html(row) {
               const scale = d3.scale.threshold()
-                .domain([0, .045])
+                .domain([0, 0.045])
                 .range(['down', 'right', 'up']);
               const icon = `<span class='fa fa-arrow-${scale(row.emp_pc)}'></span>`;
               const value = d3.format(',.0%')(row.emp_pc);
               const text = `<span class='text'>${value}</span>`;
               return text + icon;
-            }
+            },
           },
           {
             head: 'Wage (weekly)',
@@ -64,41 +66,48 @@
               const text = `<span class='text'>${value}</span>`;
               return text + d3.range(nIcons)
                 .map(() => icon).join('');
-            }
+            },
           },
           {
             head: 'Change in Wage',
             cl: 'wage_pc',
             html(row) {
               const scale = d3.scale.threshold()
-                .domain([0, .07])
+                .domain([0, 0.07])
                 .range(['down', 'right', 'up']);
 
               const icon = `<span class='fa fa-arrow-${scale(row.wage_pc)}'></span>`;
               const value = d3.format(',.0%')(row.wage_pc);
               const text = `<span class='text'>${value}</span>`;
               return text + icon;
-            }
-          }
+            },
+          },
         ];
 
         table.call(renderTable);
 
         function renderTable(table) {
-
           table.select('thead')
             .selectAll('th')
               .data(columns)
             .enter().append('th')
               .attr('class', d => d.cl)
               .text(d => d.head)
-              .on('click', d => {
-                const ascending = d.ascending ? false : true;
+              .on('click', (d) => {
+                let ascending;
+                if (d.ascending) {
+                  ascending = false;
+                } else {
+                  ascending = true;
+                }
                 d.ascending = ascending;
 
-                qcew.sort((a, b) => ascending ?
-                  d3.ascending(a[d.cl], b[d.cl]) :
-                  d3.descending(a[d.cl], b[d.cl]));
+                qcew.sort((a, b) => {
+                  if (ascending) {
+                    return d3.ascending(a[d.cl], b[d.cl]);
+                  }
+                  return d3.descending(a[d.cl], b[d.cl]);
+                });
                 table.call(renderTable);
               });
 
@@ -109,13 +118,13 @@
             .on('mouseleave', mouseleave);
 
           const td = tr.selectAll('td')
-              .data((row, i) => columns.map(c => {
-            const cell = {};
-             d3.keys(c).forEach(k => {
-                 cell[k] = typeof c[k] == 'function' ? c[k](row,i) : c[k];
-             });
-             return cell;
-          }));
+              .data((row, i) => columns.map((c) => {
+                const cell = {};
+                d3.keys(c).forEach((k) => {
+                  cell[k] = typeof c[k] === 'function' ? c[k](row, i) : c[k];
+                });
+                return cell;
+              }));
 
           td.enter().append('td')
             .attr('class', d => d.cl)
