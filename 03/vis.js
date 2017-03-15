@@ -27,12 +27,13 @@ function ready(error, qcew, stateface) {
       head: 'Employment (millions)',
       cl: 'emp',
       html(row) {
-        const scale = d3.scale.threshold()
+        const scale = d3.scaleThreshold()
           .domain([1, 2, 4, 6])
           .range([1, 2, 3, 4, 5]);
 
         const icon = '<span class="fa fa-male"></span>';
-        const value = d3.format(',.1f')(row.emp / 1000000);
+        // const value = d3.format(',.1f')(row.emp / 1000000);
+        const value = row.emp / 1000000;
         const nIcons = scale(value);
         const text = `<span class='text'>${value}</span>`;
         return text + d3.range(nIcons)
@@ -43,11 +44,12 @@ function ready(error, qcew, stateface) {
       head: 'Change in Employment',
       cl: 'emp_pc',
       html(row) {
-        const scale = d3.scale.threshold()
+        const scale = d3.scaleThreshold()
           .domain([0, 0.045])
           .range(['down', 'right', 'up']);
         const icon = `<span class='fa fa-arrow-${scale(row.emp_pc)}'></span>`;
-        const value = d3.format(',.0%')(row.emp_pc);
+        // const value = d3.format(',.0%')(row.emp_pc);
+        const value = row.emp_pc;
         const text = `<span class='text'>${value}</span>`;
         return text + icon;
       },
@@ -56,13 +58,14 @@ function ready(error, qcew, stateface) {
       head: 'Wage (weekly)',
       cl: 'wage',
       html(row) {
-        const scale = d3.scale.threshold()
+        const scale = d3.scaleThreshold()
           .domain([850, 1000])
           .range([1, 2, 3]);
 
         const icon = '<span class="fa fa-money fa-rotate-90"></span>';
         const nIcons = scale(row.wage);
-        const value = d3.format('$,')(row.wage);
+        // const value = d3.format('$,')(row.wage);
+        const value = row.wage;
         const text = `<span class='text'>${value}</span>`;
         return text + d3.range(nIcons)
           .map(() => icon).join('');
@@ -72,12 +75,13 @@ function ready(error, qcew, stateface) {
       head: 'Change in Wage',
       cl: 'wage_pc',
       html(row) {
-        const scale = d3.scale.threshold()
+        const scale = d3.scaleThreshold()
           .domain([0, 0.07])
           .range(['down', 'right', 'up']);
 
         const icon = `<span class='fa fa-arrow-${scale(row.wage_pc)}'></span>`;
-        const value = d3.format(',.0%')(row.wage_pc);
+        // const value = d3.format(',.0%')(row.wage_pc);
+        const value = row.wage_pc;
         const text = `<span class='text'>${value}</span>`;
         return text + icon;
       },
@@ -112,14 +116,16 @@ function ready(error, qcew, stateface) {
           table.call(renderTable);
         });
 
-    const tr = table.select('tbody').selectAll('tr')
+    const trUpdate = table.select('tbody').selectAll('tr')
       .data(qcew);
 
-    tr.enter().append('tr')
+    const trEnter = trUpdate.enter().append('tr');
+
+    const trMerge = trUpdate.merge(trEnter)
       .on('mouseenter', mouseenter)
       .on('mouseleave', mouseleave);
 
-    const td = tr.selectAll('td')
+    const td = trMerge.selectAll('td')
         .data((row, i) => columns.map((c) => {
           console.log('row from trMerge data', row);
           console.log('i from trMerge data', i);

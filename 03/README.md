@@ -1,4 +1,4 @@
-an [es2015](https://babeljs.io/learn-es2015/) iteration on the block [Pictogram Table](https://bl.ocks.org/armollica/e4fbd694c02629251b6f) from [@armollica](https://twitter.com/armollica)
+an [es2015](https://babeljs.io/learn-es2015/) [d3v4](https://github.com/d3/d3/blob/master/CHANGES.md) iteration on the block [Pictogram Table](https://bl.ocks.org/armollica/e4fbd694c02629251b6f) from [@armollica](https://twitter.com/armollica)
 
 ---
 
