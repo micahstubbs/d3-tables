@@ -31,7 +31,7 @@ function ready(error, inputData, stateface) {
     },
     {
       head: 'State',
-      cl: 'state',
+      cl: 'leftText',
       html(row) {
         const sfLetter = stateface[row.state_abbrev];
         const icon = `<span class='stateface'>${sfLetter}</span>`;
@@ -40,8 +40,8 @@ function ready(error, inputData, stateface) {
       },
     },
     {
-      head: 'StateIcon',
-      cl: 'stateIcon',
+      head: '',
+      cl: 'arrow',
       html(row) {
         const sfLetter = stateface[row.state_abbrev];
         const arrowLeft = `<span class='fa fa-arrow-left'></span>`;
@@ -51,7 +51,7 @@ function ready(error, inputData, stateface) {
     },
     {
       head: 'State',
-      cl: 'state',
+      cl: 'rightText',
       html(row) {
         const sfLetter = stateface[row.state_abbrev];
         const icon = `<span class='stateface'>${sfLetter}</span>`;
