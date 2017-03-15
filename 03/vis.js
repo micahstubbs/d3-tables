@@ -9,7 +9,7 @@ queue()
   .defer(d3.json, 'stateface.json')
   .await(ready);
 
-function ready(error, qcew, stateface) {
+function ready(error, inputData, stateface) {
   if (error) throw error;
 
   const columns = [
@@ -84,40 +84,66 @@ function ready(error, qcew, stateface) {
     },
   ];
 
+  // global variables to hold selection state
+  // out side of renderTable 'update' function
+  let tableUpdate;
+  let tableEnter;
+  let tableMerge;
+
   table.call(renderTable);
 
   function renderTable(table) {
-    const tableUpdate = table.select('thead')
-      .selectAll('th')
-        .data(columns);
+    console.log('arguments from renderTable', arguments);
 
-    const tableEnter = tableUpdate
-      .enter().append('th')
-        .attr('class', d => d.cl)
-        .text(d => d.head)
-        .on('click', (d) => {
-          let ascending;
-          if (d.ascending) {
-            ascending = false;
-          } else {
-            ascending = true;
+    tableUpdate = table.select('thead')
+        .selectAll('th')
+          .data(columns)
+
+    if (typeof tableUpdate !== 'undefined') {
+      const tableExit = tableUpdate.exit();
+      tableExit.remove()
+    }
+
+    tableEnter = tableUpdate
+      .enter().append('th');
+
+    tableEnter
+      .attr('class', d => d.cl)
+      .text(d => d.head)
+      .on('click', (d) => {
+        console.log('d from click', d);
+        let ascending;
+        if (d.ascending) {
+          ascending = false;
+        } else {
+          ascending = true;
+        }
+        d.ascending = ascending;
+        // console.log('ascending', ascending);
+        // console.log('d after setting d.ascending property', d);
+        // console.log('inputData before sorting', inputData);
+        inputData.sort((a, b) => {
+          if (ascending) {
+            return d3.ascending(a[d.cl], b[d.cl]);
           }
-          d.ascending = ascending;
-          qcew.sort((a, b) => {
-            if (ascending) {
-              return d3.ascending(a[d.cl], b[d.cl]);
-            }
-            return d3.descending(a[d.cl], b[d.cl]);
-          });
-          table.call(renderTable);
+          return d3.descending(a[d.cl], b[d.cl]);
         });
+        // console.log('inputData after sorting', inputData);
+        table.call(renderTable);
+      });
 
-    const trUpdate = table.select('tbody').selectAll('tr')
-      .data(qcew);
+    if (typeof trUpdate !== 'undefined') {
+      const trExit = trUpdate.exit();
+      trExit.remove()
+    }
+    trUpdate = table.select('tbody').selectAll('tr')
+      .data(inputData);
 
-    const trEnter = trUpdate.enter().append('tr');
+    tableMerge = tableUpdate.merge(tableEnter);
 
-    const trMerge = trUpdate.merge(trEnter)
+    trEnter = trUpdate.enter().append('tr');
+
+    trMerge = trUpdate.merge(trEnter)
       .on('mouseenter', mouseenter)
       .on('mouseleave', mouseleave);
 
