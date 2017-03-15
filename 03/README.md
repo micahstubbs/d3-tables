@@ -1,5 +1,8 @@
 an [es2015](https://babeljs.io/learn-es2015/) [d3v4](https://github.com/d3/d3/blob/master/CHANGES.md) iteration on the block [Pictogram Table](https://bl.ocks.org/armollica/e4fbd694c02629251b6f) from [@armollica](https://twitter.com/armollica)
 
+a comment in a recent [talk](https://www.meetup.com/Bay-Area-d3-User-Group/events/237644015/) from [@elijah_meeks](https://twitter.com/elijah_meeks) exposed me to the [ISOTYPE](https://en.wikipedia.org/wiki/Isotype_(picture_language)) design system developed by [Otto Neurath](https://en.wikipedia.org/wiki/Otto_Neurath) and colleagues in the 1930s.  learning about the origins of the use of pictograms in information graphics sparked my interest in working with d3 examples like this. for more, read on to this nice set of [blog posts on ISOTYPE](https://eagereyes.org/?s=isotype) from [@eagereyes](https://twitter.com/eagereyes)
+
+
 ---
 
 Using pictograms within a table. Click headers to sort.
