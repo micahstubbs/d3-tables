@@ -50,8 +50,8 @@ function ready(error, inputData, stateface) {
       },
     },
     {
-      head: 'State2',
-      cl: 'state2',
+      head: 'State',
+      cl: 'state',
       html(row) {
         const sfLetter = stateface[row.state_abbrev];
         const icon = `<span class='stateface'>${sfLetter}</span>`;
