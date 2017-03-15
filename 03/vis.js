@@ -123,15 +123,10 @@ function ready(error, qcew, stateface) {
 
     const tdUpdate = trMerge.selectAll('td')
       .data((row, i) => columns.map((c) => {
-        // console.log('row from trMerge data', row);
-        // console.log('i from trMerge data', i);
-        // console.log('c from trMerge data', c);
         const cell = {};
-        // console.log('d3.keys(c)', d3.keys(c));
         d3.keys(c).forEach((k) => {
           cell[k] = typeof c[k] === 'function' ? c[k](row, i) : c[k];
         });
-        // console.log('cell from trMerge data', cell);
         return cell;
       }));
 
@@ -142,10 +137,7 @@ function ready(error, qcew, stateface) {
       .style('background-color', '#fff')
       .style('border-bottom', '.5px solid white');
 
-    tdEnter.html(d => {
-      console.log ('d from td.html', d);
-      return d.html;
-    });
+    tdEnter.html(d => d.html);
   }
 }
 
