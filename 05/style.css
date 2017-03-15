@@ -58,7 +58,11 @@ td > span.left {
 }
 
 th.left {
-  float: right;
+  text-align: right;
+}
+
+th.right {
+  text-align: left;
 }
 
 span.text {
