@@ -139,7 +139,7 @@ function ready(error, qcew, stateface) {
       .style('border-bottom', '.5px solid white');
 
     td.html(d => {
-      console.log ('d from td.html', d);
+      // console.log ('d from td.html', d);
       return d.html;
     });
   }
