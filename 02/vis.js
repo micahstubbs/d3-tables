@@ -120,24 +120,28 @@ function ready(error, qcew, stateface) {
       .on('mouseleave', mouseleave);
 
     const td = tr.selectAll('td')
-        .data((row, i) => columns.map((c) => {
-          console.log('row from trMerge data', row);
-          console.log('i from trMerge data', i);
-          console.log('c from trMerge data', c);
-          const cell = {};
-          console.log('d3.keys(c)', d3.keys(c));
-          d3.keys(c).forEach((k) => {
-            cell[k] = typeof c[k] === 'function' ? c[k](row, i) : c[k];
-          });
-          return cell;
-        }));
+      .data((row, i) => columns.map((c) => {
+        // console.log('row from trMerge data', row);
+        // console.log('i from trMerge data', i);
+        // console.log('c from trMerge data', c);
+        const cell = {};
+        // console.log('d3.keys(c)', d3.keys(c));
+        d3.keys(c).forEach((k) => {
+          cell[k] = typeof c[k] === 'function' ? c[k](row, i) : c[k];
+        });
+        // console.log('cell from trMerge data', cell);
+        return cell;
+      }));
 
     td.enter().append('td')
       .attr('class', d => d.cl)
       .style('background-color', '#fff')
       .style('border-bottom', '.5px solid white');
 
-    td.html(d => d.html);
+    td.html(d => {
+      console.log ('d from td.html', d);
+      return d.html;
+    });
   }
 }
 

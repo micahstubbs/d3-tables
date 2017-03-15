@@ -32,8 +32,7 @@ function ready(error, qcew, stateface) {
           .range([1, 2, 3, 4, 5]);
 
         const icon = '<span class="fa fa-male"></span>';
-        // const value = d3.format(',.1f')(row.emp / 1000000);
-        const value = row.emp / 1000000;
+        const value = d3.format(',.1f')(row.emp / 1000000);
         const nIcons = scale(value);
         const text = `<span class='text'>${value}</span>`;
         return text + d3.range(nIcons)
@@ -48,8 +47,7 @@ function ready(error, qcew, stateface) {
           .domain([0, 0.045])
           .range(['down', 'right', 'up']);
         const icon = `<span class='fa fa-arrow-${scale(row.emp_pc)}'></span>`;
-        // const value = d3.format(',.0%')(row.emp_pc);
-        const value = row.emp_pc;
+        const value = d3.format(',.0%')(row.emp_pc);
         const text = `<span class='text'>${value}</span>`;
         return text + icon;
       },
@@ -64,8 +62,7 @@ function ready(error, qcew, stateface) {
 
         const icon = '<span class="fa fa-money fa-rotate-90"></span>';
         const nIcons = scale(row.wage);
-        // const value = d3.format('$,')(row.wage);
-        const value = row.wage;
+        const value = d3.format('$,')(row.wage);
         const text = `<span class='text'>${value}</span>`;
         return text + d3.range(nIcons)
           .map(() => icon).join('');
@@ -80,8 +77,7 @@ function ready(error, qcew, stateface) {
           .range(['down', 'right', 'up']);
 
         const icon = `<span class='fa fa-arrow-${scale(row.wage_pc)}'></span>`;
-        // const value = d3.format(',.0%')(row.wage_pc);
-        const value = row.wage_pc;
+        const value = d3.format(',.0%')(row.wage_pc);
         const text = `<span class='text'>${value}</span>`;
         return text + icon;
       },
@@ -125,25 +121,31 @@ function ready(error, qcew, stateface) {
       .on('mouseenter', mouseenter)
       .on('mouseleave', mouseleave);
 
-    const td = trMerge.selectAll('td')
-        .data((row, i) => columns.map((c) => {
-          console.log('row from trMerge data', row);
-          console.log('i from trMerge data', i);
-          console.log('c from trMerge data', c);
-          const cell = {};
-          console.log('d3.keys(c)', d3.keys(c));
-          d3.keys(c).forEach((k) => {
-            cell[k] = typeof c[k] === 'function' ? c[k](row, i) : c[k];
-          });
-          return cell;
-        }));
+    const tdUpdate = trMerge.selectAll('td')
+      .data((row, i) => columns.map((c) => {
+        // console.log('row from trMerge data', row);
+        // console.log('i from trMerge data', i);
+        // console.log('c from trMerge data', c);
+        const cell = {};
+        // console.log('d3.keys(c)', d3.keys(c));
+        d3.keys(c).forEach((k) => {
+          cell[k] = typeof c[k] === 'function' ? c[k](row, i) : c[k];
+        });
+        // console.log('cell from trMerge data', cell);
+        return cell;
+      }));
 
-    td.enter().append('td')
+    const tdEnter = tdUpdate.enter().append('td');
+
+    tdEnter
       .attr('class', d => d.cl)
       .style('background-color', '#fff')
       .style('border-bottom', '.5px solid white');
 
-    td.html(d => d.html);
+    tdEnter.html(d => {
+      console.log ('d from td.html', d);
+      return d.html;
+    });
   }
 }
 
