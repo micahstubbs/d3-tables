@@ -29,11 +29,14 @@ function ready(error, inputData, stateface) {
   // sort descending by the valueVariable value
   tableData.sort((a, b) => b[valueVariable] - a[valueVariable]);
 
+  // subset and only show the top 10 values
+  tableData = tableData.slice(0, 10);
+
   const columns = [
     {
       head: valueVariable,
       cl: valueVariable,
-      align: 'right',
+      align: 'center',
       html(row) {
         const scale = d3.scaleThreshold()
           .domain([1, 2, 4, 6])
