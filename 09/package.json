@@ -1,0 +1,12 @@
+{
+  "name": "pictogram-table",
+  "version": "1.0.0",
+  "description": "now showing only the top 30 values",
+  "main": "vis.js",
+  "scripts": {
+    "build": "cp vis.js ~/workspace/visualizations/correlation-graph-examples/07/draw-pictogram-table.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "@micahstubbs <micah.stubbs@gmail.com> (https://twitter.com/micahstubbs)",
+  "license": "MIT"
+}

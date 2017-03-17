@@ -8,8 +8,28 @@ function drawPictogramTable (props) {
   let linksVariable = 'links';
   if (typeof options.linksVariable !== 'undefined') {
     linksVariable = options.linksVariable;
-  } 
+  }
+  let nodesVariable = 'nodes';
+  if (typeof options.nodesVariable !== 'undefined') {
+    nodesVariable = options.nodesVariable;
+  }
+  let nameVariable = 'name';
+  if (typeof options.nameVariable !== 'undefined') {
+    nameVariable = options.nameVariable;
+  }
+  let sourceVariableLabel = 'name';
+  if (typeof options.sourceVariableLabel !== 'undefined') {
+    sourceVariableLabel = options.sourceVariableLabel;
+  }
+  let targetVariableLabel = 'name';
+  if (typeof options.targetVariableLabel !== 'undefined') {
+    targetVariableLabel = options.targetVariableLabel;
+  }
   const valueVariable = options.valueVariable;
+  let valueVariableHeader = valueVariable;
+  if (typeof options.valueVariableHeader !== 'undefined') {
+    valueVariableHeader = options.valueVariableHeader;
+  }
   const sourceVariable = options.sourceVariable;
   const targetVariable = options.targetVariable;
 
@@ -22,8 +42,14 @@ function drawPictogramTable (props) {
 
   function setupTable(inputData) {
     
+    const nodes = inputData[nodesVariable];
+    console.log('nodes from drawPictogramTable', nodes);
     let tableData = inputData[linksVariable];
-    tableData.map(d => d[valueVariable] = Number(d[valueVariable]));
+    tableData.forEach(d => {
+      d[valueVariable] = Number(d[valueVariable]);
+      d[`${sourceVariable}Name`] = nodes[d[sourceVariable]][nameVariable];
+      d[`${targetVariable}Name`] = nodes[d[targetVariable]][nameVariable];
+    });
 
     // sort descending by the valueVariable value
     tableData.sort((a, b) => b[valueVariable] - a[valueVariable]);
@@ -33,7 +59,7 @@ function drawPictogramTable (props) {
 
     const columns = [
       {
-        head: valueVariable,
+        head: valueVariableHeader,
         cl: valueVariable,
         align: 'center',
         html(row) {
@@ -52,7 +78,7 @@ function drawPictogramTable (props) {
         cl: sourceVariable,
         align: 'left',
         html(row) {
-          const source = row[sourceVariable];
+          const source = row[sourceVariableLabel];
           const text = `<span class='title left'>${source}</span>`;
           return text;
         },
@@ -72,7 +98,7 @@ function drawPictogramTable (props) {
         cl: targetVariable,
         align: 'right',
         html(row) {
-          const target = row[targetVariable];
+          const target = row[targetVariableLabel];
           const text = `<span class='title'>${target}</span>`;
           return text;
         },
