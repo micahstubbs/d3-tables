@@ -32,6 +32,10 @@ function drawPictogramTable (props) {
   }
   const sourceVariable = options.sourceVariable;
   const targetVariable = options.targetVariable;
+  let topN = 32;
+  if (typeof options.topN !== 'undefined') {
+    topN = options.topN;
+  }
 
   const table = d3.select(selector).append('table');
   table.append('thead');
@@ -55,7 +59,7 @@ function drawPictogramTable (props) {
     tableData.sort((a, b) => b[valueVariable] - a[valueVariable]);
 
     // subset and only show the top 32 values
-    tableData = tableData.slice(0, 32);
+    tableData = tableData.slice(0, topN);
 
     const columns = [
       {
