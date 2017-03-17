@@ -5,6 +5,10 @@ function drawPictogramTable (props) {
   const inputData = props.data;
   const options = props.options;
   
+  let linksVariable = 'links';
+  if (typeof options.linksVariable !== 'undefined') {
+    linksVariable = options.linksVariable;
+  } 
   const valueVariable = options.valueVariable;
   const sourceVariable = options.sourceVariable;
   const targetVariable = options.targetVariable;
@@ -18,7 +22,7 @@ function drawPictogramTable (props) {
 
   function setupTable(inputData) {
     
-    let tableData = inputData.links;
+    let tableData = inputData[linksVariable];
     tableData.map(d => d[valueVariable] = Number(d[valueVariable]));
 
     // sort descending by the valueVariable value
@@ -151,7 +155,7 @@ function drawPictogramTable (props) {
 
       tdEnter
         .attr('class', d => d.cl)
-        .style('background-color', '#fff')
+        .style('background-color', 'rgba(255,255,255,0.9)')
         .style('border-bottom', '.5px solid white');
 
       tdEnter.html(d => d.html);
@@ -166,7 +170,7 @@ function drawPictogramTable (props) {
 
   function mouseleave() {
     d3.select(this).selectAll('td')
-      .style('background-color', '#fff')
+      .style('background-color', 'rgba(255,255,255,0.9)')
       .style('border-bottom', '.5px solid white');
   }
 }
